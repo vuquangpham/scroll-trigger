@@ -1,71 +1,91 @@
-// style
-import './_index.scss';
-
 // script
 import {init, validateTarget} from "./helpers";
 import {uid} from "./utils";
+import {createDebug} from "./markers";
 
 /**
  * Private class
  * */
-const defaultOptions = {
-    id: uid(),
-};
+class ScrollTrigger{
+    constructor(){
+    }
 
-class Library{
-    constructor(target, options){
-        this._attr = {};
-        this._class = {};
+    create(options){
+        const instance = {
+            trigger: null,
 
-        // validate target
-        this.target = validateTarget(target);
-        if(!this.target) return;
+            // position
+            start: 'top top',
+            end: 'top bottom',
 
-        // options
-        this.options = {
-            ...defaultOptions,
+            // debug
+            markers: true,
+
+            // callbacks
+            onUpdate: (self) => {
+            },
             ...options
         };
+        instance.trigger = validateTarget(instance.trigger);
 
-        init(this);
-    }
-}
+        if(!instance.trigger) return;
 
+        // fake value
+        const start = innerHeight * 0.9, end = window.innerHeight * 0.6;
 
-/**
- * Controller
- * */
-class LibraryController{
-    constructor(){
-        this.instances = [];
-    }
+        // logic here 👀
+        const animate = () => {
+            console.log('run');
 
-    add(instance = {}){
-        if(this.instances.find(i => i.id !== instance.id)){
-            this.instances.push(instance);
-            return instance;
+            // bounding object of trigger
+            const triggerBox = instance.trigger.getBoundingClientRect();
+
+            // get position
+            const areaInViewPort = start - triggerBox.top;
+            const availableArea = triggerBox.height - (end - start);
+
+            if(availableArea <= 0){
+                console.warn('Available area of trigger element is shorter than the viewport!');
+            }
+
+            // match only 1 time (availableArea is equal to areaInViewport)
+            if(availableArea === 0 && areaInViewPort === 0){
+                // trigger progress
+                console.log('trigger 1 time');
+            }else if(availableArea !== 0){
+                const progress = areaInViewPort / availableArea;
+                console.log('area in viewport', areaInViewPort);
+                console.log(progress);
+                if(areaInViewPort < 0 || areaInViewPort > availableArea) return;
+                console.log('in progress');
+            }
+
+            requestAnimationFrame(animate);
+        };
+        animate();
+
+        // create debug
+        if(instance.markers){
+            createDebug({
+                start,
+                end,
+            }, {
+                element: instance.trigger
+            });
         }
-        return null;
     }
 
     get(id){
-        return this.instances.find(i => i.id === id);
+
+    }
+
+    destroy(instance){
+
     }
 }
-
-
-/**
- * Public library controller
- * */
-window.LibraryController = new LibraryController();
 
 
 /**
  * Public library
  * */
-window.Library = {
-    init: (target, options = {}) => {
-        return window.LibraryController.add(new Library(target, options));
-    },
-    get: (id) => window.LibraryController.get(id)
-};
+window.ScrollTrigger = new ScrollTrigger();

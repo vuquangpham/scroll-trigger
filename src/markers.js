@@ -30,12 +30,11 @@ export function createDebug(viewportPosition, triggerPosition){
             height: '3px',
             fontSize: '14px'
         };
-
-        // start position
+        // start position.js
         const startPosition = createDOMElement({
             type: 'div',
             style: {
-                top: hasFixedPosition ? position.start : 0,
+                top: hasFixedPosition ? position.start + 'px' : 0,
                 background: 'green',
                 color: 'green',
                 ...commonStyle
@@ -43,7 +42,7 @@ export function createDebug(viewportPosition, triggerPosition){
         });
         startPosition.innerHTML = `<span>${hasFixedPosition ? 'scroller-start' : 'start'}</span>`;
 
-        // end position
+        // end position.js
         const endPosition = createDOMElement({
             type: 'div',
             style: {
