@@ -14,7 +14,7 @@ export function createDebug(viewportPosition, triggerPosition){
         const debugPanel = createDOMElement({
             type: 'div',
             style: {
-                position: 'absolute',
+                position: hasFixedPosition ? 'fixed' : 'absolute',
                 top: 0,
                 left: 0,
                 right: 0,
@@ -24,7 +24,7 @@ export function createDebug(viewportPosition, triggerPosition){
 
         // common style
         const commonStyle = {
-            position: hasFixedPosition ? 'fixed' : 'absolute',
+            position: 'absolute',
             right: 0,
             width: '100px',
             height: '3px',
