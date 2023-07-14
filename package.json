@@ -1,10 +1,10 @@
 {
-  "name": "boilw",
-  "project-name": "Boilw Template",
-  "output-name": "boilw",
+  "name": "scroll-trigger",
+  "project-name": "Scroll Trigger 🎢",
+  "output-name": "ScrollTrigger",
   "version": "0.0.1",
-  "description": "A boilerplate for creating a library with Javascript",
-  "main": "./dist/webpack-boilerplate.min.js",
+  "description": "A mimic version of GSAP ScrollTrigger plugin",
+  "main": "./dist/ScrollTrigger.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server --config config/webpack.dev.js",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/vuquangpham/webpack-boilerplate.git"
+    "url": "https://github.com/vuquangpham/scroll-trigger.git"
   },
   "keywords": [
     "webpack",
@@ -28,9 +28,9 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/vuquangpham/webpack-boilerplate/issues"
+    "url": "https://github.com/vuquangpham/scroll-trigger/issues"
   },
-  "homepage": "https://github.com/vuquangpham/webpack-boilerplate",
+  "homepage": "https://github.com/vuquangpham/scroll-trigger",
   "devDependencies": {
     "@babel/core": "^7.19.6",
     "@babel/plugin-proposal-class-properties": "^7.18.6",
