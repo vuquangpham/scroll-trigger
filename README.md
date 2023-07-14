@@ -1,6 +1,6 @@
-# Boilw Template
+# Scroll Trigger
 
-> Creating Javascript library on the fly 💫
+> A mimic version of GSAP ScrollTrigger 👀
 
 ## Deployment
 
