@@ -48,13 +48,3 @@ Smooth.smooth({
         square.style.transform = `translateX(${current.x}px) rotate(${current.rotate}deg)`;
     }
 });
-
-// new instance
-ScrollTrigger.create({
-    start: 'top top',
-    end: 'bottom bottom',
-    trigger: '[data-back-to-top]',
-    onEnter: () => {
-        scrollTo({top: 0});
-    }
-});
