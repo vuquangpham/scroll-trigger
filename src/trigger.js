@@ -21,7 +21,7 @@ export function handlePositionUpdate(instance){
         const areaInViewport = viewportStartPosition - (triggerBox.top + triggerStartPosition);
         const availableArea = (triggerEndPosition - triggerStartPosition) - (viewportEndPosition - viewportStartPosition);
 
-        if(availableArea <= 0){
+        if(availableArea < 0){
             isValid = false;
             console.warn('Available area of trigger element is shorter than the viewport!');
             return;

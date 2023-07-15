@@ -38,24 +38,23 @@ ScrollTrigger.create({
     onUpdate: (self) => {
         update.x = troi * self.progress;
         update.rotate = 360 * self.progress;
-
-        // console.log(self);
-        console.log('progress in viewport', self.progress);
     },
-    onLeave: (self) => {
-        console.log('leave');
-        // self.destroy();
-    },
-    onEnter: () => {
-        console.log('enter');
-    }
 });
-
 Smooth.smooth({
     timing: 'lerp',
     onUpdate: (self) => {
         current.x = self.lerp(current.x, update.x, 0.03);
         current.rotate = self.lerp(current.rotate, update.rotate, 0.03);
         square.style.transform = `translateX(${current.x}px) rotate(${current.rotate}deg)`;
+    }
+});
+
+// new instance
+ScrollTrigger.create({
+    start: 'top top',
+    end: 'bottom bottom',
+    trigger: '[data-back-to-top]',
+    onEnter: () => {
+        scrollTo({top: 0});
     }
 });
