@@ -16,16 +16,7 @@ const entry = [config.paths.devDirectoryScript];
  * Build type with ENV variables
  * */
 const libraryTarget = process.env.TARGET;
-let filename, experiments = {}, library = undefined;
-
-if(libraryTarget === 'module'){
-    filename = `${config.packageInfo.outputName}.module.js`;
-    experiments = {
-        outputModule: true,
-    };
-}else{
-    filename = `${config.packageInfo.outputName}.min.js`;
-}
+let filename = `${config.packageInfo.packageOutputName}.min.js`, experiments = {}, library = undefined;
 
 // export
 module.exports = merge(common, {
