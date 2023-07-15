@@ -11,7 +11,7 @@
     "build:umd": "cross-env TARGET=umd webpack --config config/webpack.prod.js",
     "build:module": "cross-env TARGET=module webpack --config config/webpack.prod.js",
     "build": "webpack --config config/webpack.build.js",
-    "prod": "npm run build:umd && npm run build:module"
+    "prod": "npm run build:umd"
   },
   "repository": {
     "type": "git",
