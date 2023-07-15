@@ -2,11 +2,31 @@ import {createDOMElement} from "./utils";
 
 /***
  * Create markers for debug
+ * @param instance
+ * @return void
+ */
+export function createMarkers(instance){
+    if(!instance.markers) return;
+
+    // create debug panel
+    createDebug({
+        start: instance.startPositionObject.viewport,
+        end: instance.endPositionObject.viewport,
+    }, {
+        start: instance.startPositionObject.trigger,
+        end: instance.endPositionObject.trigger,
+        element: instance.trigger
+    });
+}
+
+
+/**
+ * Create debug panel
  * Params in pixel unit
  * @param viewportPosition
  * @param triggerPosition
- */
-export function createDebug(viewportPosition, triggerPosition){
+ * */
+function createDebug(viewportPosition, triggerPosition){
     [viewportPosition, triggerPosition].forEach(position => {
         const hasFixedPosition = !position.element;
 
@@ -34,7 +54,7 @@ export function createDebug(viewportPosition, triggerPosition){
         const startPosition = createDOMElement({
             type: 'div',
             style: {
-                top: hasFixedPosition ? position.start + 'px' : 0,
+                top: position.start + 'px',
                 background: 'green',
                 color: 'green',
                 ...commonStyle
@@ -46,15 +66,15 @@ export function createDebug(viewportPosition, triggerPosition){
         const endPosition = createDOMElement({
             type: 'div',
             style: {
-                top: hasFixedPosition ? position.end + 'px' : '100%',
+                top: position.end + 'px',
                 right: 0,
                 background: 'red',
                 color: 'red',
-                transform: 'translateY(-100%)',
+                transform: `translateY(${position.end === 0 ? 0 : '-100%'})`,
                 ...commonStyle
             }
         });
-        endPosition.innerHTML = `<span style="transform:translateY(-100%); display:block;">${hasFixedPosition ? 'scroller-end' : 'end'}</span>`;
+        endPosition.innerHTML = `<span style="transform:translateY(${position.end === 0 ? 0 : '-100%'}); display:block;">${hasFixedPosition ? 'scroller-end' : 'end'}</span>`;
 
         // append DOM element
         debugPanel.appendChild(startPosition);
