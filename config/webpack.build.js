@@ -115,7 +115,7 @@ module.exports = merge(common, {
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: `${config.packageInfo.packageName}.min.css`,
+            filename: `${config.packageInfo.packageOutputName}.min.css`,
         }),
         new HtmlWebpackPlugin({
             template: path.join(config.paths.devDirectory, 'index.html'),
