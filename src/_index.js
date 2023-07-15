@@ -2,27 +2,38 @@
 import {init, validateTarget} from "./helpers";
 import {uid} from "./utils";
 import {createDebug} from "./markers";
+import {handlePositionUpdate} from "./trigger";
 
 /**
  * Private class
  * */
 class ScrollTrigger{
     constructor(){
+        // instances
+        this.instances = [];
     }
 
     create(options){
         const instance = {
+            id: uid('st-'),
             trigger: null,
 
             // position
             start: 'top top',
             end: 'top bottom',
 
+            // timeout for rAF
+            timeout: null,
+
             // debug
             markers: true,
 
             // callbacks
+            onEnter: (self) => {
+            },
             onUpdate: (self) => {
+            },
+            onLeave: (self) => {
             },
             ...options
         };
@@ -30,39 +41,20 @@ class ScrollTrigger{
 
         if(!instance.trigger) return;
 
+        // add destroy method
+        instance.destroy = this.destroy.bind(this, instance);
+
         // fake value
         const start = innerHeight * 0.9, end = window.innerHeight * 0.6;
 
-        // logic here 👀
-        const animate = () => {
-            console.log('run');
+        // update the position on each frame 👀
+        handlePositionUpdate(instance);
 
-            // bounding object of trigger
-            const triggerBox = instance.trigger.getBoundingClientRect();
+        // invalid position => not timeout value
+        if(!instance.timeout) return null;
 
-            // get position
-            const areaInViewPort = start - triggerBox.top;
-            const availableArea = triggerBox.height - (end - start);
-
-            if(availableArea <= 0){
-                console.warn('Available area of trigger element is shorter than the viewport!');
-            }
-
-            // match only 1 time (availableArea is equal to areaInViewport)
-            if(availableArea === 0 && areaInViewPort === 0){
-                // trigger progress
-                console.log('trigger 1 time');
-            }else if(availableArea !== 0){
-                const progress = areaInViewPort / availableArea;
-                console.log('area in viewport', areaInViewPort);
-                console.log(progress);
-                if(areaInViewPort < 0 || areaInViewPort > availableArea) return;
-                console.log('in progress');
-            }
-
-            requestAnimationFrame(animate);
-        };
-        animate();
+        // add new instance
+        this.instances.push(instance);
 
         // create debug
         if(instance.markers){
@@ -73,14 +65,38 @@ class ScrollTrigger{
                 element: instance.trigger
             });
         }
+
+        return {
+            id: instance.id,
+            trigger: instance.trigger,
+            destroy: instance.destroy
+        };
     }
 
     get(id){
-
+        // matched condition
+        const isMatched = (i) => i.id === id;
+        return this.instances.find(isMatched);
     }
 
     destroy(instance){
+        // matched condition
+        const isMatched = (i) => i.id === instance.id;
 
+        const result = this.instances.find(isMatched);
+        if(result){
+            const index = this.instances.findIndex(isMatched);
+
+            // remove rAF
+            instance.destroy = true;
+            cancelAnimationFrame(result.timeout);
+
+            // remove from instances
+            this.instances.splice(index, 1);
+
+            return true;
+        }
+        return false;
     }
 }
 
