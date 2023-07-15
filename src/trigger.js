@@ -1,23 +1,28 @@
 /**
  * Checking trigger point
  * @param instance {object}
- * @return void
+ * @return boolean
  * */
 export function handlePositionUpdate(instance){
-    // const start = instance.start, end = instance.end;
-    const start = innerHeight * 0.9, end = window.innerHeight * 0.6;
-
+    const viewportStartPosition = instance.startPositionObject.viewport,
+        viewportEndPosition = instance.endPositionObject.viewport,
+        triggerStartPosition = instance.startPositionObject.trigger,
+        triggerEndPosition = instance.endPositionObject.trigger;
     let lastProgress = 0;
+
+    // flag for checking is the condition valid
+    let isValid = true;
 
     const rAF = () => {
         // bounding object of trigger
         const triggerBox = instance.trigger.getBoundingClientRect();
 
         // get position
-        const areaInViewPort = start - triggerBox.top;
-        const availableArea = triggerBox.height - (end - start);
+        const areaInViewport = viewportStartPosition - (triggerBox.top + triggerStartPosition);
+        const availableArea = (triggerEndPosition - triggerStartPosition) - (viewportEndPosition - viewportStartPosition);
 
         if(availableArea <= 0){
+            isValid = false;
             console.warn('Available area of trigger element is shorter than the viewport!');
             return;
         }
@@ -25,7 +30,7 @@ export function handlePositionUpdate(instance){
         // update the progress value
         // 1: height of trigger element is equal to the height of end-start
         // 2: normal situation
-        const progress = availableArea === 0 && areaInViewPort === 0 ? 1 : areaInViewPort / availableArea;
+        const progress = availableArea === 0 && areaInViewport === 0 ? 1 : areaInViewport / availableArea;
 
         // do callbacks
         doCallbacks(instance, lastProgress, progress);
@@ -40,6 +45,8 @@ export function handlePositionUpdate(instance){
         instance.timeout = requestAnimationFrame(rAF);
     };
     rAF();
+
+    return isValid;
 }
 
 /**
