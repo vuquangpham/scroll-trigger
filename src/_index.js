@@ -1,8 +1,9 @@
 // script
-import {init, validateTarget} from "./helpers";
+import {validateTarget} from "./helpers";
 import {uid} from "./utils";
-import {createDebug} from "./markers";
+import {createMarkers} from "./markers";
 import {handlePositionUpdate} from "./trigger";
+import {validateAndConvertObservePositionToPixel} from "./position";
 
 /**
  * Private class
@@ -38,33 +39,26 @@ class ScrollTrigger{
             ...options
         };
         instance.trigger = validateTarget(instance.trigger);
-
         if(!instance.trigger) return;
 
         // add destroy method
         instance.destroy = this.destroy.bind(this, instance);
 
-        // fake value
-        const start = innerHeight * 0.9, end = window.innerHeight * 0.6;
+        // get pixel value
+        const isValidPositionPoint = validateAndConvertObservePositionToPixel(instance);
+        if(!isValidPositionPoint) return null;
 
         // update the position on each frame 👀
-        handlePositionUpdate(instance);
+        const isValidPosition = handlePositionUpdate(instance);
 
         // invalid position => not timeout value
-        if(!instance.timeout) return null;
+        if(!isValidPosition) return null;
 
         // add new instance
         this.instances.push(instance);
 
         // create debug
-        if(instance.markers){
-            createDebug({
-                start,
-                end,
-            }, {
-                element: instance.trigger
-            });
-        }
+        createMarkers(instance);
 
         return {
             id: instance.id,
