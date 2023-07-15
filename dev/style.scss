@@ -1,42 +1,52 @@
 *, *::before, *::after {
-    padding:0;
-    margin:0;
-    box-sizing:inherit;
+  padding: 0;
+  margin: 0;
+  box-sizing: inherit;
 }
 
 html {
-    font-family:"Open Sans", sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
 body {
-    box-sizing: border-box;
-    min-height: 100vh;
-    font-size: 16px;
+  box-sizing: border-box;
+  min-height: 100vh;
+  font-size: 16px;
 }
 
 .container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding-top: 100px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding-top: 100px;
 }
 
 /* spacing */
 :is(h1, h2, h3, p):not(:last-child) {
-    margin-bottom: 2rem;
+  margin-bottom: 2rem;
 }
 
 /* text */
 h1 {
-    font-size: 30px;
+  font-size: 30px;
 }
 
 h2 {
-    font-size: 20px;
-    border-bottom: 1px solid #dee2e6;
-    padding-bottom: 10px;
+  font-size: 20px;
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 10px;
 }
 
 /* CSS here */
 section {
-    min-height: 100vh;
+  min-height: 100vh;
+  position: relative;
+}
+
+.square {
+  width: 200px;
+  height: 200px;
+  background: #dee2e6;
+  position: absolute;
+  top: calc(50% - 100px);
+  left: 0;
 }
