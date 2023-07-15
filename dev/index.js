@@ -34,6 +34,7 @@ ScrollTrigger.create({
     trigger: '[data-target]',
     start: 'top center',
     end: 'bottom 50%',
+    markers: true,
     onUpdate: (self) => {
         update.x = troi * self.progress;
         update.rotate = 360 * self.progress;

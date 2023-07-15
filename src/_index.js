@@ -27,7 +27,7 @@ class ScrollTrigger{
             timeout: null,
 
             // debug
-            markers: true,
+            markers: false,
 
             // callbacks
             onEnter: (self) => {
