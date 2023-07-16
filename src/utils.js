@@ -102,3 +102,15 @@ export function createDOMElement(options = {
 export function mapNumber(number, inMin, inMax, outMin, outMax){
     return (number - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
 }
+
+
+/**
+ * Clamp
+ * @param number
+ * @param min
+ * @param max
+ * @return number
+ * */
+export function clamp(number, min, max){
+    return Math.max(min, Math.min(number, max));
+}

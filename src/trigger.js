@@ -1,3 +1,5 @@
+import {clamp} from "./utils";
+
 /**
  * Checking trigger point
  * @param instance {object}
@@ -67,14 +69,6 @@ const getProgressInViewport = (instance) => {
 
 
 /**
- * Validate progress
- * @param number
- * @return boolean
- * */
-const validateProgress = (number) => number >= 0 && number <= 1;
-
-
-/**
  * Do callbacks
  * @param instance {object}
  * @param lastProgress {number}
@@ -82,9 +76,13 @@ const validateProgress = (number) => number >= 0 && number <= 1;
  * @return void
  * */
 const doCallbacks = (instance, lastProgress, progress) => {
+
+    const validateProgress = clamp(progress, 0, 1);
+    const validateLastProgress = clamp(lastProgress, 0, 1);
+
     const returnObject = {
         trigger: instance.trigger,
-        progress: progress,
+        progress: validateProgress,
         destroy: instance.destroy
     };
 
@@ -93,13 +91,13 @@ const doCallbacks = (instance, lastProgress, progress) => {
         instance.onEnter(returnObject);
     }
 
-    // on Leave
-    if(typeof instance.onLeave === 'function' && progress > 1 && validateProgress(lastProgress)){
-        instance.onLeave(returnObject);
+    // onUpdate
+    if(typeof instance.onUpdate === 'function' && validateProgress !== validateLastProgress){
+        instance.onUpdate(returnObject);
     }
 
-    // onUpdate
-    if(typeof instance.onUpdate === 'function' && validateProgress(progress) && lastProgress !== progress){
-        instance.onUpdate(returnObject);
+    // on Leave
+    if(typeof instance.onLeave === 'function' && lastProgress <= 1 && progress > 1){
+        instance.onLeave(returnObject);
     }
 };
