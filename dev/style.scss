@@ -49,4 +49,6 @@ section {
   position: absolute;
   top: calc(50% - 100px);
   left: 0;
+  transform: translateX(calc(var(--progress, 0) * (100vw - 100%))) rotate(calc(720deg * var(--progress, 0)));
+  opacity: calc(var(--progress, 0));
 }

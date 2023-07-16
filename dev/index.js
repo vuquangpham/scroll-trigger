@@ -17,44 +17,29 @@ dataTitles.forEach(e => e.innerHTML = packageInfo["project-name"]);
 dataDescriptions.forEach(e => e.innerHTML = packageInfo.description);
 
 // code
-const square = document.querySelector('.square');
-const troi = innerWidth - square.getBoundingClientRect().width;
+const wrapper = document.querySelector('[data-target]');
 
 const current = {
-    x: 0,
-    rotate: 0
+    progress: 0,
 };
-
 const update = {
-    x: 0,
-    rotate: 0
+    progress: 0
 };
-let progress = 0;
 
 ScrollTrigger.create({
-    trigger: '[data-target]',
+    trigger: wrapper,
     start: 'top center',
     end: 'bottom 50%',
     markers: true,
     onUpdate: (self) => {
-        // console.log('update');
-        update.x = troi * self.progress;
-        update.rotate = 360 * self.progress;
-    },
-    onEnter: () => {
-        console.log('Enter');
-    },
-    onLeave: () => {
-        console.log('Leave');
+        update.progress = self.progress;
     },
 });
 
 Smooth.smooth({
     timing: 'lerp',
-    timeFraction: Math.max(0, Math.min(1, progress)),
     onUpdate: (self) => {
-        current.x = self.lerp(current.x, update.x, 0.03);
-        current.rotate = self.lerp(current.rotate, update.rotate, 0.03);
-        square.style.transform = `translateX(${current.x}px) rotate(${current.rotate}deg)`;
+        current.progress = self.lerp(current.progress, update.progress, 0.05);
+        wrapper.style.setProperty('--progress', current.progress);
     },
 });
