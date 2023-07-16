@@ -31,7 +31,7 @@ const packageOutputName = packageInfo['output-name'];
 const packageBannerConfig = {
     banner:
         `/**
- * ${packageName} v${packageVersion}
+ * ${packageOutputName} v${packageVersion}
  * @author ${packageAuthor}
  * @homepage ${packageHomepage}
  * @license ${packageLicense} ${new Date().getFullYear()}
