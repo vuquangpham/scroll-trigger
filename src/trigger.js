@@ -4,33 +4,21 @@
  * @return boolean
  * */
 export function handlePositionUpdate(instance){
-    const viewportStartPosition = instance.startPositionObject.viewport,
-        viewportEndPosition = instance.endPositionObject.viewport,
-        triggerStartPosition = instance.startPositionObject.trigger,
-        triggerEndPosition = instance.endPositionObject.trigger;
     let lastProgress = 0;
 
     // flag for checking is the condition valid
     let isValid = true;
 
     const rAF = () => {
-        // bounding object of trigger
-        const triggerBox = instance.trigger.getBoundingClientRect();
+        // progress in viewport
+        const progress = getProgressInViewport(instance);
 
-        // get position
-        const areaInViewport = viewportStartPosition - (triggerBox.top + triggerStartPosition);
-        const availableArea = (triggerEndPosition - triggerStartPosition) - (viewportEndPosition - viewportStartPosition);
-
-        if(availableArea < 0){
+        // invalid progress number
+        if(isNaN(progress)){
             isValid = false;
             console.warn('Available area of trigger element is shorter than the viewport!');
             return;
         }
-
-        // update the progress value
-        // 1: height of trigger element is equal to the height of end-start
-        // 2: normal situation
-        const progress = availableArea === 0 && areaInViewport === 0 ? 1 : areaInViewport / availableArea;
 
         // do callbacks
         doCallbacks(instance, lastProgress, progress);
@@ -48,6 +36,33 @@ export function handlePositionUpdate(instance){
 
     return isValid;
 }
+
+
+/**
+ * Get progress in viewport
+ * */
+const getProgressInViewport = (instance) => {
+    const viewportStartPosition = instance.startPositionObject.viewport,
+        viewportEndPosition = instance.endPositionObject.viewport,
+        triggerStartPosition = instance.startPositionObject.trigger,
+        triggerEndPosition = instance.endPositionObject.trigger;
+
+    // bounding object of trigger
+    const triggerBox = instance.trigger.getBoundingClientRect();
+
+    // get position
+    const areaInViewport = viewportStartPosition - (triggerBox.top + triggerStartPosition);
+    const availableArea = (triggerEndPosition - triggerStartPosition) - (viewportEndPosition - viewportStartPosition);
+
+    // invalid area
+    if(availableArea < 0) return NaN;
+
+    // update the progress value
+    // 1: height of trigger element is equal to the height of end-start
+    // 2: normal situation
+    return availableArea === 0 && areaInViewport === 0 ? 1 : areaInViewport / availableArea;
+};
+
 
 /**
  * Validate progress
