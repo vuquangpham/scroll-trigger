@@ -40,6 +40,8 @@ export function handlePositionUpdate(instance){
 
 /**
  * Get progress in viewport
+ * @param instance {object}
+ * @return number
  * */
 const getProgressInViewport = (instance) => {
     const viewportStartPosition = instance.startPositionObject.viewport,
