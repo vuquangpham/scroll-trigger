@@ -1,3 +1,6 @@
+import {validateAndConvertObservePositionToPixel} from "./position";
+import {handlePositionUpdate} from "./trigger";
+
 /**
  * Validate DOM element
  * @param {string || object} target
@@ -26,6 +29,19 @@ export function validateTarget(target){
 
 /**
  * Init options
+ * @param instance {object}
+ * @return boolean
  * */
-export function init(context){
+export function init(instance){
+    // get pixel value
+    const isValidPositionPoint = validateAndConvertObservePositionToPixel(instance);
+    if(!isValidPositionPoint) return false;
+
+    // update the position on each frame 👀
+    const isValidPositionWhenUpdate = handlePositionUpdate(instance);
+
+    // invalid position => not timeout value
+    if(!isValidPositionWhenUpdate) return false;
+
+    return true;
 }

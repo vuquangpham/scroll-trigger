@@ -1,9 +1,8 @@
 // script
-import {validateTarget} from "./helpers";
-import {uid} from "./utils";
+import {init, validateTarget} from "./helpers";
+import {debounce, uid} from "./utils";
 import {createMarkers} from "./markers";
-import {handlePositionUpdate} from "./trigger";
-import {validateAndConvertObservePositionToPixel} from "./position";
+import {handleResizeEvent} from "./resize";
 
 /**
  * Private class
@@ -12,6 +11,9 @@ class ScrollTrigger{
     constructor(){
         // instances
         this.instances = [];
+
+        // resize
+        window.addEventListener('resize', debounce(handleResizeEvent.bind(this)));
     }
 
     create(options){
@@ -41,18 +43,12 @@ class ScrollTrigger{
         instance.trigger = validateTarget(instance.trigger);
         if(!instance.trigger) return;
 
+        // init
+        const initStatus = init(instance);
+        if(!initStatus) return null;
+
         // add destroy method
         instance.destroy = this.destroy.bind(this, instance);
-
-        // get pixel value
-        const isValidPositionPoint = validateAndConvertObservePositionToPixel(instance);
-        if(!isValidPositionPoint) return null;
-
-        // update the position on each frame 👀
-        const isValidPosition = handlePositionUpdate(instance);
-
-        // invalid position => not timeout value
-        if(!isValidPosition) return null;
 
         // add new instance
         this.instances.push(instance);
