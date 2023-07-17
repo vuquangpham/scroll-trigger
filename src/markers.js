@@ -58,10 +58,11 @@ function createDebug(viewportPosition, triggerPosition){
                 top: position.start + 'px',
                 background: 'green',
                 color: 'green',
+                transform: `translateY(${position.start === innerHeight ? '-100%' : 0})`,
                 ...commonStyle
             }
         });
-        startPosition.innerHTML = `<span>${hasFixedPosition ? 'scroller-start' : 'start'}</span>`;
+        startPosition.innerHTML = `<span style="transform:translateY(${position.start === innerHeight ? '-100%' : 0}); display:block">${hasFixedPosition ? 'scroller-start' : 'start'}</span>`;
 
         // end position.js
         const endPosition = createDOMElement({

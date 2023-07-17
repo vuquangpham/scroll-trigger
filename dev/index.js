@@ -7,7 +7,6 @@ import './Smooth.min.js';
 
 // package info
 import packageInfo from '../package.json';
-import {Logger} from "sass";
 
 // update project information
 const dataTitles = document.querySelectorAll('[data-title]');
@@ -36,7 +35,7 @@ const customTransition = {
 ScrollTrigger.create({
     trigger: wrapper,
     start: 'top center',
-    end: 'bottom 50%',
+    end: 'top 0%',
     markers: true,
     onUpdate: (self) => {
         // update.progress = self.progress;
