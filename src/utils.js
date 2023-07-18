@@ -63,7 +63,8 @@ export function createDOMElement(options = {
         value: ''
     }],
     style: {},
-    classes: []
+    classes: [],
+    innerHTML: ''
 }){
     let element = null;
 
@@ -85,6 +86,11 @@ export function createDOMElement(options = {
 
     // assign custom style
     Object.assign(element.style, options.style);
+
+    // assign innerHTML
+    if(options.innerHTML){
+        element.innerHTML = options.innerHTML;
+    }
 
     return element;
 }

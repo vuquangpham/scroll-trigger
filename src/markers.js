@@ -1,4 +1,4 @@
-import {createDOMElement} from "./utils";
+import {createDOMElement, debounce} from "./utils";
 
 /***
  * Create markers for debug
@@ -8,84 +8,64 @@ import {createDOMElement} from "./utils";
 export function createMarkers(instance){
     if(!instance.markers) return;
 
-    // create debug panel
-    createDebug({
-        start: instance.startPositionObject.viewport,
-        end: instance.endPositionObject.viewport,
-    }, {
-        start: instance.startPositionObject.trigger,
-        end: instance.endPositionObject.trigger,
-        element: instance.trigger
+    // viewport
+    const scrollerStartMarker = createMarker({
+        position: instance.startPositionObject.viewport,
+        textContent: 'scroller-start',
+        color: 'red',
     });
+    const scrollerEndMarker = createMarker({
+        position: instance.endPositionObject.viewport,
+        textContent: 'scroller-end',
+        color: 'green',
+    });
+
+    // trigger
+    const startMarker = createMarker({
+        position: instance.startPositionObject.trigger,
+        textContent: 'start',
+        color: 'red',
+        parentEl: instance.trigger
+    });
+    const endMarker = createMarker({
+        position: instance.endPositionObject.trigger,
+        textContent: 'end',
+        color: 'green',
+        parentEl: instance.trigger
+    });
+
+    // save to the instance
+    instance.markerElements = [scrollerStartMarker, scrollerEndMarker, startMarker, endMarker];
+    document.body.append(...instance.markerElements);
 }
+
+const createMarker = (options) => {
+    const {position, textContent, color, parentEl} = options;
+
+    // validate position
+    const textSize = 14;
+    const isOutOfViewport = isPositionOutOfViewport(position + textSize);
+
+    return createDOMElement({
+        type: 'div',
+        style: {
+            position: parentEl ? 'absolute' : 'fixed',
+            top: !parentEl ? position + 'px' : parentEl.getBoundingClientRect().top + position + window.scrollY + 'px',
+            right: 0,
+            fontSize: textSize + 'px',
+            lineHeight: 1,
+            borderWidth: isOutOfViewport && !parentEl ? '0 0 1px' : '1px 0 0',
+            borderStyle: 'solid',
+            borderColor: color,
+            color: color,
+            transform: isOutOfViewport && !parentEl ? 'translateY(-100%)' : '',
+        },
+        innerHTML: textContent
+    });
+};
 
 
 /**
- * Create debug panel
- * Params in pixel unit
- * @param viewportPosition
- * @param triggerPosition
+ * Is out of viewport
  * */
-function createDebug(viewportPosition, triggerPosition){
-    [viewportPosition, triggerPosition].forEach(position => {
-        const hasFixedPosition = !position.element;
-
-        // create element
-        const debugPanel = createDOMElement({
-            type: 'div',
-            style: {
-                position: hasFixedPosition ? 'fixed' : 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                pointerEvents: 'none'
-            }
-        });
-
-        // common style
-        const commonStyle = {
-            position: 'absolute',
-            right: 0,
-            width: '100px',
-            height: '3px',
-            fontSize: '14px'
-        };
-        // start position.js
-        const startPosition = createDOMElement({
-            type: 'div',
-            style: {
-                top: position.start + 'px',
-                background: 'green',
-                color: 'green',
-                transform: `translateY(${position.start === innerHeight ? '-100%' : 0})`,
-                ...commonStyle
-            }
-        });
-        startPosition.innerHTML = `<span style="transform:translateY(${position.start === innerHeight ? '-100%' : 0}); display:block">${hasFixedPosition ? 'scroller-start' : 'start'}</span>`;
-
-        // end position.js
-        const endPosition = createDOMElement({
-            type: 'div',
-            style: {
-                top: position.end + 'px',
-                right: 0,
-                background: 'red',
-                color: 'red',
-                transform: `translateY(${position.end === 0 ? 0 : '-100%'})`,
-                ...commonStyle
-            }
-        });
-        endPosition.innerHTML = `<span style="transform:translateY(${position.end === 0 ? 0 : '-100%'}); display:block;">${hasFixedPosition ? 'scroller-end' : 'end'}</span>`;
-
-        // append DOM element
-        debugPanel.appendChild(startPosition);
-        debugPanel.appendChild(endPosition);
-
-        const wrapper = hasFixedPosition ? document.body : position.element;
-        if(getComputedStyle(wrapper).position === 'static'){
-            wrapper.style.position = 'relative';
-        }
-        wrapper.appendChild(debugPanel);
-    });
-}
+const isPositionOutOfViewport = (position) => position >= innerHeight;
