@@ -20,12 +20,12 @@ dataDescriptions.forEach(e => e.innerHTML = packageInfo.description);
 const wrapper = document.querySelector('[data-target]');
 
 // for lerp purpose
-// const current = {
-//     progress: 0,
-// };
-// const update = {
-//     progress: 0
-// };
+const current = {
+    progress: 0,
+};
+const update = {
+    progress: 0
+};
 
 // for custom transition
 const customTransition = {
@@ -44,8 +44,8 @@ ScrollTrigger.create({
 });
 
 Smooth.create({
-    timeFraction: customTransition,
-    // timing:'lerp',
+    customTimeFraction: customTransition,
+    destroyWhenCompleted: false,
     timing: function easeOutBounce(x){
         const n1 = 7.5625;
         const d1 = 2.75;
@@ -60,8 +60,7 @@ Smooth.create({
         }
     },
     onUpdate: (self) => {
-        // current.progress = self.lerp(current.progress, update.progress, 0.05);
-        // console.log(self.progress);
-        wrapper.style.setProperty('--progress', self.progress);
+        current.progress = self.lerp(current.progress, self.progress, 0.05);
+        wrapper.style.setProperty('--progress', current.progress);
     },
 });
