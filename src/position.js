@@ -1,3 +1,5 @@
+import {getObservedBreakpoint} from "./responsive";
+
 /***
  * Convert and return position in pixel unit
  * Default is pixel
@@ -16,17 +18,26 @@ const AVAILABLE_POSITION = {
  * @return boolean
  * */
 export function validateAndConvertObservePositionToPixel(instance){
+    let startPosition = instance.start, endPosition = instance.end;
+
+    // responsive observed breakpoint
+    const responsiveBreakpoint = getObservedBreakpoint(instance.responsive);
+    if(responsiveBreakpoint){
+        startPosition = responsiveBreakpoint.start;
+        endPosition = responsiveBreakpoint.end;
+    }
+
     const commonObject = {
         viewportHeight: innerHeight,
         triggerHeight: instance.trigger.getBoundingClientRect().height
     };
 
     const startPositionObj = getPixelUnit({
-        position: instance.start,
+        position: startPosition,
         ...commonObject
     });
     const endPositionObj = getPixelUnit({
-        position: instance.end,
+        position: endPosition,
         ...commonObject
     });
 
