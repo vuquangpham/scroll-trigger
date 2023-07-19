@@ -4,7 +4,15 @@ import {createMarkers} from "./markers";
 /**
  * Handle resize event
  * */
+let previousWidth = innerWidth;
+
 export function handleResizeEvent(){
+    if(previousWidth === innerWidth) return;
+
+    // update the previous width
+    previousWidth = innerWidth;
+
+    // update instance position
     this.instances.forEach(instance => {
         // recalculate observe position
         validateAndConvertObservePositionToPixel(instance);
