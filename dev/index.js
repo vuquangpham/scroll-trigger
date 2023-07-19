@@ -35,9 +35,17 @@ const customTransition = {
 ScrollTrigger.create({
     trigger: wrapper,
     start: 'top center',
-    end: 'top 0%',
+    end: () => '+=' + window.innerHeight * 0.3,
     markers: true,
+    responsive: [
+        {
+            breakpoint: 1180,
+            start: 'top center',
+            end: 'bottom center'
+        },
+    ],
     onUpdate: (self) => {
+        console.log('update', self.progress);
         // update.progress = self.progress;
         customTransition.value = self.progress;
     },

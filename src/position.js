@@ -27,21 +27,41 @@ export function validateAndConvertObservePositionToPixel(instance){
         endPosition = responsiveBreakpoint.end;
     }
 
+    // if start and end position are function
+    if(typeof startPosition === 'function'){
+        startPosition = startPosition();
+    }
+    if(typeof endPosition === 'function'){
+        endPosition = endPosition();
+    }
+
+    // common
     const commonObject = {
         viewportHeight: innerHeight,
         triggerHeight: instance.trigger.getBoundingClientRect().height
     };
 
+    // start position
     const startPositionObj = getPixelUnit({
         position: startPosition,
         ...commonObject
     });
-    const endPositionObj = getPixelUnit({
+
+    // end position
+    let endPositionObj = getPixelUnit({
         position: endPosition,
         ...commonObject
     });
 
-    if(!startPositionObj || !endPositionObj){
+    // validate if endPositionObj is a number (with "+=400" syntax only)
+    if(typeof endPositionObj === "number"){
+        endPositionObj = {
+            trigger: startPositionObj.trigger + endPositionObj,
+            viewport: startPositionObj.viewport
+        };
+    }
+
+    if(!startPositionObj || !endPositionObj || typeof startPositionObj === "number"){
         console.error('Please fill in the start and end position or left it empty to get the default value!');
         return false;
     }
@@ -60,6 +80,11 @@ function getPixelUnit(object){
 
     // string
     const separatePositionText = position.split(' ');
+
+    // "+=400px" only, not "50%+=100px"
+    if(separatePositionText.length === 1 && position.includes('+=')) return getNumericValue(position, triggerHeight);
+
+    // invalid string
     if(separatePositionText.length === 1 || separatePositionText.length > 2) return null;
 
     const returnObject = {
@@ -91,19 +116,22 @@ function getPixelUnit(object){
 
 /**
  * Get numeric value
+ * @param {string} string
+ * @param {number} height
+ * @return {number | null}
  * */
 const getNumericValue = (string, height = 0) => {
+    // "+=400px" only, not "50%+=100px"
+    if(string.includes('+=') && string.split('+=').length === 2)
+        return string.includes('%') ? getPercentageValue(string.slice(2), height) : parseFloat(string.slice(2));
+
     // is a number format
     // 300px, 50%, 50%+=100px
-    const castToNumericValue = parseFloat(string);
-    if(!castToNumericValue) return null;
+    if(!parseFloat(string)) return null;
 
     // multiple calculation (with += keyword)
     if(string.includes('+=') && string.split('+=').length > 1){
-        return string.split('+=').reduce((acc, cur) => {
-            if(cur.includes('%')) return acc + getPercentageValue(cur, height);
-            return acc + parseFloat(cur);
-        }, 0);
+        return string.split('+=').reduce((acc, cur) => cur.includes('%') ? acc + getPercentageValue(cur, height) : acc + parseFloat(cur), 0);
     }
 
     // percentage value
@@ -113,4 +141,11 @@ const getNumericValue = (string, height = 0) => {
     return parseFloat(string);
 };
 
+
+/**
+ * Get percentage value
+ * @param {string} string
+ * @param {number} wrapperHeight
+ * @return {number}
+ * */
 const getPercentageValue = (string, wrapperHeight = window.innerHeight) => parseFloat(string) * 0.01 * wrapperHeight;
