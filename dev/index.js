@@ -45,7 +45,6 @@ ScrollTrigger.create({
         },
     ],
     onUpdate: (self) => {
-        console.log('update', self.progress);
         // update.progress = self.progress;
         customTransition.value = self.progress;
     },

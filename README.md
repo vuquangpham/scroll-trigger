@@ -35,13 +35,21 @@ const instance = ScrollTrigger.create({
     start: 'top center', // trigger when top of the element hits the center of the viewport
     end: () => '+=' + 300, // end when scroll 300px after trigger
     onEnter: (self) => {
+        // get the trigger element
         console.log('The trigger element has entered the viewport', self.trigger);
+
+        // check which of direction that the trigger enter the viewport
+        console.log('Enter back:', self.isEnterBack);
     },
     onUpdate: (self) => {
         console.log('Progress:', self.progress);
     },
     onLeave: (self) => {
-        self.destroy(); // destroy the instance when out of viewport
+        // check which of direction that the trigger leave the viewport
+        console.log('Leave back:', self.isLeaveBack);
+
+        // destroy the instance when out of viewport
+        self.destroy();
     },
     responsive: [
         {

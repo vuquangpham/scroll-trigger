@@ -86,8 +86,9 @@ const doCallbacks = (instance, previousProgress, progress) => {
     };
 
     // onEnter
-    if(typeof instance.onEnter === 'function' && previousProgress < 0 && progress > 0){
-        instance.onEnter(returnObject);
+    const hasEnterTheViewport = (previousProgress <= 0 && progress > 0) || (previousProgress > 1 && progress <= 1);
+    if(typeof instance.onEnter === 'function' && hasEnterTheViewport){
+        instance.onEnter({...returnObject, isEnterBack: previousProgress > 1 && progress <= 1});
     }
 
     // onUpdate
@@ -96,7 +97,8 @@ const doCallbacks = (instance, previousProgress, progress) => {
     }
 
     // on Leave
-    if(typeof instance.onLeave === 'function' && previousProgress <= 1 && progress > 1){
-        instance.onLeave(returnObject);
+    const hasLeaveTheViewport = (previousProgress <= 1 && progress > 1) || (previousProgress > 0 && progress <= 0);
+    if(typeof instance.onLeave === 'function' && hasLeaveTheViewport){
+        instance.onLeave({...returnObject, isLeaveBack: previousProgress >= 0 && progress < 0});
     }
 };
