@@ -12,15 +12,15 @@ Self hosted 👉 https://github.com/vuquangpham/scroll-trigger/
 
 #### Options
 
-| Name                    | Default         | Description                                                                |
-|-------------------------|-----------------|----------------------------------------------------------------------------|
-| `id`                    | `unique`        |                                                                            |
-| `start`                 | `top top`       |                                                                            |
-| `end`                   | `bottom bottom` |                                                                            |
-| `responsive`            | `[]`            | change the observed breakpoint (`start` and `end`) on different breakpoint |
-| `onEnter:(self) => {}`  | `function`      |                                                                            |
-| `onLeave:(self) => {}`  | `function`      |                                                                            |
-| `onUpdate:(self) => {}` | `function`      |                                                                            |
+| Name                    | Default         | Description                                                                       |
+|-------------------------|-----------------|-----------------------------------------------------------------------------------|
+| `id`                    | `unique`        | id for clarifying each instance                                                   |
+| `start`                 | `top top`       | trigger start position (trigger when top of the element hits top of the viewport) |
+| `end`                   | `bottom bottom` | end position (when bottom of the element hits bottom of the viewport)             |
+| `responsive`            | `[]`            | change the observed breakpoint (`start` and `end`) on different breakpoint        |
+| `onEnter:(self) => {}`  | `function`      |                                                                                   |
+| `onLeave:(self) => {}`  | `function`      |                                                                                   |
+| `onUpdate:(self) => {}` | `function`      |                                                                                   |
 
 ### Methods
 
@@ -34,8 +34,14 @@ Self hosted 👉 https://github.com/vuquangpham/scroll-trigger/
 const instance = ScrollTrigger.create({
     start: 'top center', // trigger when top of the element hits the center of the viewport
     end: () => '+=' + 300, // end when scroll 300px after trigger
+    onEnter: (self) => {
+        console.log('The trigger element has entered the viewport', self.trigger);
+    },
     onUpdate: (self) => {
         console.log('Progress:', self.progress);
+    },
+    onLeave: (self) => {
+        self.destroy(); // destroy the instance when out of viewport
     },
     responsive: [
         {
