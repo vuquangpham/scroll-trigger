@@ -23,7 +23,7 @@ class ScrollTrigger{
 
             // position
             start: 'top top',
-            end: 'top bottom',
+            end: 'bottom bottom',
 
             // timeout for rAF
             timeout: null,
