@@ -1,6 +1,6 @@
 # Scroll Trigger
 
-> A mimic version of GSAP ScrollTrigger with 5.72kB 👀
+> A mimic version of GSAP ScrollTrigger with 5.81kB 👀
 
 ## Getting started
 
