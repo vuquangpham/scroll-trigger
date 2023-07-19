@@ -6,7 +6,7 @@ import {clamp} from "./utils";
  * @return boolean
  * */
 export function handlePositionUpdate(instance){
-    let lastProgress = 0;
+    let previousProgress = 0;
 
     // flag for checking is the condition valid
     let isValid = true;
@@ -23,10 +23,10 @@ export function handlePositionUpdate(instance){
         }
 
         // do callbacks
-        doCallbacks(instance, lastProgress, progress);
+        doCallbacks(instance, previousProgress, progress);
 
-        // update lastProgress value
-        lastProgress = progress;
+        // update previousProgress value
+        previousProgress = progress;
 
         // destroy method
         if(instance.destroy === true) return;
@@ -71,14 +71,13 @@ const getProgressInViewport = (instance) => {
 /**
  * Do callbacks
  * @param instance {object}
- * @param lastProgress {number}
+ * @param previousProgress {number}
  * @param progress {number}
  * @return void
  * */
-const doCallbacks = (instance, lastProgress, progress) => {
-
+const doCallbacks = (instance, previousProgress, progress) => {
     const validateProgress = clamp(progress, 0, 1);
-    const validateLastProgress = clamp(lastProgress, 0, 1);
+    const validateLastProgress = clamp(previousProgress, 0, 1);
 
     const returnObject = {
         trigger: instance.trigger,
@@ -87,7 +86,7 @@ const doCallbacks = (instance, lastProgress, progress) => {
     };
 
     // onEnter
-    if(typeof instance.onEnter === 'function' && lastProgress < 0 && progress > 0){
+    if(typeof instance.onEnter === 'function' && previousProgress < 0 && progress > 0){
         instance.onEnter(returnObject);
     }
 
@@ -97,7 +96,7 @@ const doCallbacks = (instance, lastProgress, progress) => {
     }
 
     // on Leave
-    if(typeof instance.onLeave === 'function' && lastProgress <= 1 && progress > 1){
+    if(typeof instance.onLeave === 'function' && previousProgress <= 1 && progress > 1){
         instance.onLeave(returnObject);
     }
 };

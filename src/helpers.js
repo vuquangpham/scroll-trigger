@@ -37,11 +37,7 @@ export function init(instance){
     const isValidPositionPoint = validateAndConvertObservePositionToPixel(instance);
     if(!isValidPositionPoint) return false;
 
-    // update the position on each frame 👀
-    const isValidPositionWhenUpdate = handlePositionUpdate(instance);
-
+    // update the position on each frame
     // invalid position => not timeout value
-    if(!isValidPositionWhenUpdate) return false;
-
-    return true;
+    return handlePositionUpdate(instance);
 }

@@ -1,4 +1,4 @@
-import {createDOMElement, debounce} from "./utils";
+import {createDOMElement} from "./utils";
 
 /***
  * Create markers for debug
@@ -67,5 +67,7 @@ const createMarker = (options) => {
 
 /**
  * Is out of viewport
+ * @param {number} position
+ * @return {boolean}
  * */
 const isPositionOutOfViewport = (position) => position >= innerHeight;
