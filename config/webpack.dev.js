@@ -2,15 +2,13 @@
 const path = require("path");
 
 // webpack
-const common = require("./webpack.common");
 const {merge} = require("webpack-merge");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 // config
 const config = require('./config');
 
 // export
-module.exports = merge(common, {
+module.exports = merge(config.webpackCommonConfig, {
     mode: "development",
     entry: config.paths.devDirectoryScript,
     output: {
@@ -35,10 +33,7 @@ module.exports = merge(common, {
         ],
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            template: path.join(config.paths.devDirectory, 'index.html'),
-            filename: 'index.html',
-            inject: true,
-        }),
+        // HTML output
+        config.webpackHTMLConfig
     ]
 });

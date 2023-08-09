@@ -1,15 +1,14 @@
 {
   "name": "scroll-trigger",
-  "project-name": "Scroll Trigger 🎢",
-  "output-name": "ScrollTrigger",
+  "projectName": "Scroll Trigger 🎢",
+  "outputName": "ScrollTrigger",
   "version": "0.0.1",
   "description": "A mimic version of GSAP ScrollTrigger plugin",
   "main": "./dist/ScrollTrigger.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server --config config/webpack.dev.js",
-    "build:umd": "cross-env TARGET=umd webpack --config config/webpack.prod.js",
-    "build:module": "cross-env TARGET=module webpack --config config/webpack.prod.js",
+    "build:umd": "webpack --config config/webpack.prod.js",
     "build": "webpack --config config/webpack.build.js",
     "prod": "npm run build:umd"
   },
@@ -18,8 +17,8 @@
     "url": "https://github.com/vuquangpham/scroll-trigger.git"
   },
   "keywords": [
-    "webpack",
-    "boilerplate"
+    "scroll-trigger",
+    "javascript"
   ],
   "author": {
     "name": "Vu Pham",
@@ -36,7 +35,6 @@
     "@babel/plugin-proposal-class-properties": "^7.18.6",
     "@babel/preset-env": "^7.19.4",
     "babel-loader": "^8.2.5",
-    "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
     "file-loader": "^6.2.0",
     "html-loader": "^4.2.0",
