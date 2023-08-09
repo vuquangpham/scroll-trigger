@@ -1,10 +1,8 @@
 // webpack
 const {merge} = require("webpack-merge");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 // config
 const config = require('./config');
-const path = require("path");
 
 // entry
 const entry = [config.paths.devDirectoryScript];
