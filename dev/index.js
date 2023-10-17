@@ -66,6 +66,10 @@ ScrollTrigger.create({
 const progressElement = document.querySelector('#demo [data-progress]');
 const visiblePixelElement = document.querySelector('#demo [data-pixel]');
 
+const enterButton = document.querySelector('#enter-button');
+const updateButton = document.querySelector('#update-button');
+const leaveButton = document.querySelector('#leave-button');
+
 ScrollTrigger.create({
     trigger: '[data-trigger-demo]',
     start: 'top bottom',
@@ -74,5 +78,24 @@ ScrollTrigger.create({
     onUpdate: (self) => {
         progressElement.innerHTML = (self.progress).toFixed(2);
         visiblePixelElement.innerHTML = (self.trigger.getBoundingClientRect().height * self.progress).toFixed(2);
+
+        updateButton.classList.add('show');
+        setTimeout(() => {
+            updateButton.classList.remove('show');
+        }, 200);
+    },
+
+    onEnter: () => {
+        enterButton.classList.add('show');
+        setTimeout(() => {
+            enterButton.classList.remove('show');
+        }, 200);
+    },
+
+    onLeave: () => {
+        leaveButton.classList.add('show');
+        setTimeout(() => {
+            leaveButton.classList.remove('show');
+        }, 200);
     },
 });
