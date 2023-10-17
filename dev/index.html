@@ -15,22 +15,31 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 <section>
     <div class="container">
+        <div class="image">
+            <img src="../public/android-chrome-192x192.png" alt="Meo"/>
+        </div>
         <h1 data-title>This is a webpack boilerplate!</h1>
         <p data-description></p>
+        <a href="#next-section">
+            <span class="mouse"></span>
+            <span class="fade-in">
+                <span>Scroll more 👇</span>
+            </span>
+        </a>
     </div>
 </section>
-<section data-target style="background:deepskyblue; display:flex; align-items:center;">
-    <div class="container" style="padding-top:0; position:relative; z-index: 3;">
-        <p>Scroll more 👇</p>
+<section id="next-section">
+    <div class="container">
+        <p>Scroll more </p>
     </div>
     <div class="square"></div>
 </section>
-<section style="background:ghostwhite; display:flex; align-items:center;">
+<section>
     <div class="container">
         <p style="font-size:20px">That's all we have.</p>
     </div>
