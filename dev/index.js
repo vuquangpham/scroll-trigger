@@ -3,7 +3,6 @@ import './style.scss';
 
 // library
 import '@/_index.js';
-import './Smooth.min.js';
 
 // package info
 import packageInfo from '../package.json';
@@ -75,5 +74,5 @@ ScrollTrigger.create({
     onUpdate: (self) => {
         progressElement.innerHTML = (self.progress).toFixed(2);
         visiblePixelElement.innerHTML = (self.trigger.getBoundingClientRect().height * self.progress).toFixed(2);
-    }
+    },
 });
