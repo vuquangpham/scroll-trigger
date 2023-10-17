@@ -19,6 +19,7 @@ body {
   max-width: 900px;
   margin: 0 auto;
   padding: 20px;
+  text-align: center;
 }
 
 /* spacing */
@@ -33,15 +34,12 @@ h1 {
 
 h2 {
   font-size: 1.6rem;
-  border-bottom: 1px solid #dee2e6;
-  padding-bottom: 10px;
 }
 
 /* CSS here */
 section {
   min-height: 100vh;
   position: relative;
-  overflow: hidden;
 }
 
 section:first-child {
@@ -72,8 +70,20 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 4px;
+
   border: none;
-  background: transparent;
+  background: white;
+
+  font-size: 14px;
+  padding: 4px 6px;
+  border-radius: 5px;
+
+  transition: all .1s ease;
+
+  &.show {
+    background: #1864ab;
+    color: #fff;
+  }
 }
 
 a {
@@ -92,27 +102,31 @@ a {
     top: 50%;
     left: calc(100% + 10px);
 
-    transform-origin: 0 0;
-    transform: translateY(-50%) scaleX(0);
-
-    overflow: hidden;
+    transform: translateY(-50%);
     white-space: nowrap;
+    overflow: hidden;
 
-    opacity: 0;
-    visibility: hidden;
+    span {
+      display: block;
+      transition: all .3s ease-in-out;
+    }
 
-    animation: fade-in .5s ease-in-out .5s forwards;
+    span.absolute {
+      position: absolute;
+      bottom: 100%;
+      left: 0;
+      opacity: 0;
+    }
 
-    @keyframes fade-in {
-      from {
-        transform: translateY(-100%);
+    &:hover {
+      span.relative {
+        transform: translateY(100%);
         opacity: 0;
-        visibility: hidden;
       }
-      to {
-        transform: scaleX(1) translateY(-50%);
+
+      span.absolute {
         opacity: 1;
-        visibility: visible;
+        transform: translateY(100%)
       }
     }
   }
@@ -159,5 +173,116 @@ a {
   }
   to {
     transform: translate(-50%, 6px);
+  }
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
+}
+
+section {
+  .sticky .container {
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+// section 2
+section:nth-child(2) {
+  min-height: 100vh;
+  padding-top: 0vh;
+
+  .background {
+    background: #74c0fc;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+
+    transform: scaleX(var(--progress, 1));
+  }
+
+  .sticky {
+
+    .image {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+
+      transform: translate(-50%, -50%) scale(calc(1 - (1 - var(--progress, 0)))) rotate(calc(var(--progress) * 360deg));
+      opacity: var(--progress);
+    }
+  }
+}
+
+// section 3
+section:nth-child(3) {
+  background: #ffa94d;
+  height: 200vh;
+
+  .wrapper {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+
+  .image {
+    display: inline-block;
+    width: 100%;
+    max-width: 600px;
+    margin-top: 20px;
+
+    aspect-ratio: 3/2;
+    border-radius: 20px;
+    overflow: hidden;
+
+    img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+
+      object-position: 0% calc(var(--progress, 0) * 100%);
+    }
+  }
+}
+
+// section 4
+section:nth-child(4) {
+  min-height: 200vh;
+  background: rgba(242, 183, 5, 0.3);
+
+  // svg
+  .letter {
+    stroke-dasharray: var(--length, 0);
+    stroke-dashoffset: calc(var(--length, 0) * (1 - var(--progress, 0)));
+  }
+}
+
+// section 5
+section:nth-child(5) {
+  min-height: 200vh;
+  background: #a5d8ff;
+
+  .image {
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+
+    border-radius: 20px;
+    overflow: hidden;
+    aspect-ratio: 3/2;
+
+    img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
   }
 }
