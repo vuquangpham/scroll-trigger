@@ -4,6 +4,15 @@
 
 ## Getting started
 
+### Notice
+
+> 🆘 Please don't use ScrollTrigger with the trigger element that has `sticky` position because of the wrong
+> calculation (because the top position of the trigger element is always `0` when sticking)
+
+### Download
+
+Self hosted 👉 https://github.com/vuquangpham/scroll-trigger/
+
 ### Initialize
 
 #### Options
@@ -11,9 +20,9 @@
 | Name                    | Default         | Description                                                                       |
 |-------------------------|-----------------|-----------------------------------------------------------------------------------|
 | `id`                    | `unique`        | id for clarifying each instance                                                   |
-| `start`                 | `top top`       | trigger start position (trigger when the top of the element hits the top of the viewport) |
-| `end`                   | `bottom bottom` | end position (when the bottom of the element hits the bottom of the viewport)             |
-| `responsive`            | `[]`            | Change the observed breakpoint (`start` and `end`) on different breakpoints        |
+| `start`                 | `top top`       | trigger start position (trigger when top of the element hits top of the viewport) |
+| `end`                   | `bottom bottom` | end position (when bottom of the element hits bottom of the viewport)             |
+| `responsive`            | `[]`            | change the observed breakpoint (`start` and `end`) on different breakpoint        |
 | `onEnter:(self) => {}`  | `function`      |                                                                                   |
 | `onLeave:(self) => {}`  | `function`      |                                                                                   |
 | `onUpdate:(self) => {}` | `function`      |                                                                                   |
@@ -28,20 +37,20 @@
 
 ```js
 const instance = ScrollTrigger.create({
-    start: 'top center', // trigger when the top of the element hits the center of the viewport
+    start: 'top center', // trigger when top of the element hits the center of the viewport
     end: () => '+=' + 300, // end when scroll 300px after trigger
     onEnter: (self) => {
         // get the trigger element
         console.log('The trigger element has entered the viewport', self.trigger);
 
-        // check which direction the trigger enters the viewport
+        // check which of direction that the trigger enter the viewport
         console.log('Enter back:', self.isEnterBack);
     },
     onUpdate: (self) => {
         console.log('Progress:', self.progress);
     },
     onLeave: (self) => {
-        // check which direction the trigger leaves the viewport
+        // check which of direction that the trigger leave the viewport
         console.log('Leave back:', self.isLeaveBack);
 
         // destroy the instance when out of viewport
@@ -51,7 +60,7 @@ const instance = ScrollTrigger.create({
         {
             breakpoint: 1024,
             start: 'top 60%', // top of the element hits the 60% of the viewport
-            end: 'bottom 60%+=200px' // end when the bottom of the element hits the (60% + 200px) of the viewport
+            end: 'bottom 60%+=200px' // end when the bottom of the element hit the (60% + 200px) of the viewport
         }
     ]
 });
