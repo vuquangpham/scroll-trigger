@@ -92,11 +92,6 @@ a {
   display: inline-flex;
   transition: all .3s ease-in;
 
-  &:hover,
-  &:focus {
-    color: #1864ab;
-  }
-
   span.fade-in {
     position: absolute;
     top: 50%;
